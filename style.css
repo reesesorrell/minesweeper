@@ -1,0 +1,43 @@
+body {
+    background-color: black;
+}
+
+#container {
+    height: 480px;
+    width: 900px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 20px auto;
+    padding: 3px;
+    border: 1px solid whitesmoke;
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.block {
+    height: 27px;
+    width: 27px;
+    background-color: gray;
+    text-align: center;
+    color: gray;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+}
+
+#score {
+    display: flex;
+}
+
+#timer {
+    color: aliceblue;
+    margin: 10px auto;
+    border: 5px solid blue;
+    padding: 10px
+}
