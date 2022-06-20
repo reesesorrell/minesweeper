@@ -23,7 +23,7 @@ body {
     width: 27px;
     background-color: gray;
     text-align: center;
-    color: gray;
+    color: white;
 }
 
 button {
@@ -33,11 +33,21 @@ button {
 
 #score {
     display: flex;
+    justify-content: center;
+    width: 900px;
+    margin: 0 auto;
 }
 
 #timer {
     color: aliceblue;
     margin: 10px auto;
     border: 5px solid blue;
+    padding: 10px
+}
+
+#flag-counter {
+    color: aliceblue;
+    margin: 10px auto;
+    border: 5px dotted red;
     padding: 10px
 }

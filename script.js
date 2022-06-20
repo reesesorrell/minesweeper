@@ -10,6 +10,8 @@ let numBombs = 99;
 
 let timer = 0;
 
+let flagCount = 0;
+
 function makeGrid() {
     let bombList = makeBombList(numBombs); //NEEDS TO REMOVE THE ONE THAT IS ORIGINALLY CLICKED
     for (i=0; i<height; i++) { // make height number of rows
@@ -27,7 +29,7 @@ function makeGrid() {
                 }
             }
             block.onclick = revealBlock; //reveals the block on click
-            block.onkeydown = markBombs;
+            block.oncontextmenu = markBombs;
             row.appendChild(block);
         }
     }
@@ -54,18 +56,28 @@ function makeBombList(num) {
 }
 
 function revealBlock() {
-    this.classList.add('revealed');
-    if (this.classList.contains('mine')) {
-        this.textContent = 'X'; // adds an X if there is a mine
-        this.style.backgroundColor = 'brown';
-        this.style.color = 'white';
+    if (this.classList.contains('flagged')) {
+        this.classList.remove('flagged');
+        this.textContent = '';
+        const flagCounter = document.getElementById('flag-counter');
+        flagCount -= 1;
+        flagCounter.innerHTML = `${flagCount}`;
     }
     else {
-        let sorroundings = checkSorroundings(this);
-        this.textContent = sorroundings;
-        this.style.backgroundColor = 'beige';
-        if (sorroundings == 0) {
-            revealAdjacents(this);
+        this.classList.add('revealed');
+        if (this.classList.contains('mine')) {
+            this.textContent = 'X'; // adds an X if there is a mine
+            this.style.backgroundColor = 'brown';
+            this.style.color = 'white';
+        }
+        else {
+            let sorroundings = checkSorroundings(this);
+            this.textContent = sorroundings;
+            this.style.backgroundColor = 'beige';
+            this.style.color = 'grey';
+            if (sorroundings == 0) {
+                revealAdjacents(this);
+            }
         }
     }
 }
@@ -78,7 +90,6 @@ function revealAdjacents(block) {
                 let current = document.getElementById(`${n}`);
                 setTimeout(function() {if(current && !current.classList.contains('revealed')) {
                     current.click();
-                    console.log(n);
                     }
                 }, 10);
             }
@@ -109,9 +120,19 @@ function checkAdjacents(start) {
 }
 
 function markBombs(e) {
-    if (e.which === 32) {
-        console.log(this);
+    if (this.classList.contains('flagged')) {
+        this.classList.remove('flagged');
+        this.textContent = '';
+        const flagCounter = document.getElementById('flag-counter');
+        flagCount -= 1;
+        flagCounter.innerHTML = `${flagCount}`;
+    }
+    else {
+        this.classList.add('flagged');
         this.textContent = '|>';
+        const flagCounter = document.getElementById('flag-counter');
+        flagCount += 1;
+        flagCounter.innerHTML = `${flagCount}`;
     }
 }
 
@@ -122,7 +143,20 @@ function makeTimer() {
     timerDisplay.innerHTML = `${timer}`;
 }
 
+function makeFlagCounter() {
+    const flagCounter = document.createElement('div');
+    flagCounter.setAttribute('id', 'flag-counter');
+    scoreRow.appendChild(flagCounter);
+    flagCounter.innerHTML = `${flagCount}`;
+}
+
+container.oncontextmenu = (e) => {
+    e.preventDefault();
+  }
+
 makeTimer();
+
+makeFlagCounter();
 
 makeGrid();
 
