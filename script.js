@@ -21,7 +21,7 @@ function makeGrid() {
         for (n=0; n<width; n++) { //make column number of blocks in each row
             const block = document.createElement('button');
             block.classList.add('block');
-            let blockNum = i*width + n;
+            let blockNum = i*width + n; //CHANGE TO A COORDINATE SYSTEM
             block.setAttribute('id', `${blockNum}`) // numbers the block
             for (l=0; l<bombList.length; l++) {
                 if (bombList[l] === blockNum) {
