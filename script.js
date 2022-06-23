@@ -130,8 +130,7 @@ function markBombs(e) {
         flagCountdown += 1;
         flagCounter.innerHTML = `${flagCountdown}`;
     }
-    else if (!this.classList.contains('revealed') && 
-        !this.classList.contains('mine')) {
+    else if (!this.classList.contains('revealed')) {
         this.classList.add('flagged');
         this.textContent = '|>';
         const flagCounter = document.getElementById('flag-counter');
