@@ -10,7 +10,7 @@ let numBombs = 99;
 
 let timer = 0;
 
-let flagCount = 0;
+let flagCountdown = numBombs;
 
 function makeGrid() {
     let bombList = makeBombList(numBombs); //NEEDS TO REMOVE THE ONE THAT IS ORIGINALLY CLICKED
@@ -62,8 +62,8 @@ function revealBlock() {
         this.classList.remove('flagged');
         this.textContent = '';
         const flagCounter = document.getElementById('flag-counter');
-        flagCount -= 1;
-        flagCounter.innerHTML = `${flagCount}`;
+        flagCountdown += 1;
+        flagCounter.innerHTML = `${flagCountdown}`;
     }
     else {
         this.classList.add('revealed');
@@ -127,15 +127,16 @@ function markBombs(e) {
         this.classList.remove('flagged');
         this.textContent = '';
         const flagCounter = document.getElementById('flag-counter');
-        flagCount -= 1;
-        flagCounter.innerHTML = `${flagCount}`;
+        flagCountdown += 1;
+        flagCounter.innerHTML = `${flagCountdown}`;
     }
-    else {
+    else if (!this.classList.contains('revealed') && 
+        !this.classList.contains('mine')) {
         this.classList.add('flagged');
         this.textContent = '|>';
         const flagCounter = document.getElementById('flag-counter');
-        flagCount += 1;
-        flagCounter.innerHTML = `${flagCount}`;
+        flagCountdown -= 1;
+        flagCounter.innerHTML = `${flagCountdown}`;
     }
 }
 
@@ -150,7 +151,7 @@ function makeFlagCounter() {
     const flagCounter = document.createElement('div');
     flagCounter.setAttribute('id', 'flag-counter');
     scoreRow.appendChild(flagCounter);
-    flagCounter.innerHTML = `${flagCount}`;
+    flagCounter.innerHTML = `${flagCountdown}`;
 }
 
 container.oncontextmenu = (e) => {
