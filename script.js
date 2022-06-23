@@ -85,16 +85,20 @@ function revealBlock() {
 }
 
 function revealAdjacents(block) {
-    blockPosition = +block.getAttribute('id');
-    for (let i=blockPosition-width; i<blockPosition+width+1; i+= width) {
-        for (let n=i-1; n<i+2; n++) {
-            if(n != blockPosition) {
-                let current = document.getElementById(`${n}`);
-                setTimeout(function() {if(current && !current.classList.contains('revealed')) {
-                    current.click();
-                    }
-                }, 10);
-            }
+    let blockPosition = block.getAttribute('id').split('-');
+    let blockY = blockPosition[0];
+    let blockX = blockPosition[1];
+    for (let i = 0; i<3; i++) {
+        let currentY = blockY - 1 + i;
+        for (let n=0; n<3; n++) {
+            let currentX = blockX - 1 + n;
+            let currentCoords = `${currentY}-${currentX}`;
+            let current = document.getElementById(currentCoords);
+            setTimeout(function() {if(current != block && 
+                current && !current.classList.contains('revealed')) {
+                current.click();
+                }
+            }, 10);
         }
     }
 }
