@@ -21,7 +21,7 @@ function makeGrid() {
         for (n=0; n<width; n++) { //make column number of blocks in each row
             const block = document.createElement('button');
             block.classList.add('block');
-            let blockNum = i*width + n; //CHANGE TO A COORDINATE SYSTEM
+            let blockNum = `${i}-${n}`;
             block.setAttribute('id', `${blockNum}`) // numbers the block
             for (l=0; l<bombList.length; l++) {
                 if (bombList[l] === blockNum) {
@@ -43,7 +43,9 @@ function makeBombList(num) {
     // COME BACK AND MAKE THIS MORE EFFICIENT
     let bombLocations = [];
     for (i=0; i<num; i++) {
-        let position = randomInt(height * width);
+        let positionY = randomInt(height);
+        let positionX = randomInt(width);
+        let position = `${positionY}-${positionX}`;
         if (position in bombLocations) {
             i--;
         }
@@ -99,24 +101,21 @@ function revealAdjacents(block) {
 
 function checkSorroundings(block) {
     let mineNumber = 0;
-    let blockPosition = block.getAttribute('id');
-    let top = +blockPosition - width;
-    let bottom = +blockPosition + width;
-    mineNumber += checkAdjacents(top);
-    mineNumber += checkAdjacents(blockPosition);
-    mineNumber += checkAdjacents(bottom);
-    return mineNumber;
-}
-
-function checkAdjacents(start) {
-    let counter = 0
-    for (i=0; i<3; i++) {
-        const current = document.getElementById(+start + i - 1);
-        if (current && current.classList.contains('mine')) {
-            counter++;
+    let blockPosition = block.getAttribute('id').split('-');
+    let blockY = blockPosition[0];
+    let blockX = blockPosition[1];
+    for (let i = 0; i<3; i++) {
+        let currentY = blockY - 1 + i;
+        for (let n=0; n<3; n++) {
+            let currentX = blockX - 1 + n;
+            let currentCoords = `${currentY}-${currentX}`;
+            let current = document.getElementById(currentCoords);
+            if (current && current.classList.contains('mine')) {
+                mineNumber++;
+            }
         }
     }
-    return counter;
+    return mineNumber;
 }
 
 function markBombs(e) {
