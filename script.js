@@ -4,6 +4,12 @@ const scoreRow = document.getElementById('score');
 
 const container = document.getElementById('container');
 
+//let height = prompt('Enter height:');
+//let width = prompt('Enter width:');
+//let numBombs = prompt('Enter mines:');
+
+let colors = ['lightgrey', 'blue', 'green', 'red', 'darkblue', 'maroonk', 'turquoise', 'black', 'grey']
+
 let height = 16;
 let width = 30;
 let numBombs = 99;
@@ -13,6 +19,9 @@ let timer = 0;
 let flagCountdown = numBombs;
 
 let beginning = true;
+
+container.style.width = `${30 * width}px`;
+container.style.height = `${30 * height}px`;
 
 function makeGrid() {
      //NEEDS TO REMOVE THE ONE THAT IS ORIGINALLY CLICKED
@@ -38,7 +47,6 @@ function randomInt(num) {
 
 function makeBombList(num, start) {
     let bombLocations = [];
-    console.log(start)
     let startCoordinates = start.split('-');
     let emptyX = randomInt(1) + 1
     let emptyY = randomInt(1) + 1
@@ -115,8 +123,8 @@ function revealBlock() {
         else {
             let sorroundings = checkSorroundings(this);
             this.textContent = sorroundings;
-            this.style.backgroundColor = 'beige';
-            this.style.color = 'grey';
+            this.style.backgroundColor = 'lightgrey';
+            this.style.color = colors[sorroundings];
             if (sorroundings == 0) {
                 revealAdjacents(this);
             }
@@ -213,6 +221,22 @@ function startGame() {
             const timerDisplay = document.getElementById('timer');
             timer++;
             timerDisplay.innerHTML = `${timer}`;
+        }
+        if (flagCountdown == 0) {
+            winCount = 0;
+            for (i=0; i<height; i++) {
+                for (n=0; n<width; n++) {
+                    let currentBlock = `${i}-${n}`;
+                    if (document.getElementById(currentBlock).classList.contains('flagged') &&
+                    document.getElementById(currentBlock).classList.contains('mine')) {
+                        winCount += 1;
+                    }
+                }
+            }
+            if (winCount == 99) {
+                alert(`You have won in ${timer} seconds! Press below to play again.`)
+                document.location.reload(true);
+            }
         }
     }, 1000)
 }
